@@ -2,7 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
 const { xlsxController } = require("../controllers/xlsxController");
-const { upload } = require("../middlewares");
+const { upload, validate, fileValidate } = require("../middlewares");
+const monthSchema = require("../schemas/monthSchema");
 
 const app = express();
 
@@ -11,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("uploads"));
 
-app.post("/upload", upload.single("invoicingFile"), xlsxController);
+app.post("/upload", validate(monthSchema), upload.single("invoicingFile"), fileValidate, xlsxController);
 
 app.use((req, res) => {
     res.status(404).json({ message: "Not found" });

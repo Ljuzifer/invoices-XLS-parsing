@@ -1,7 +1,8 @@
 const upload = require("./upload");
-const validate = require("./validate");
+const { validate, fileValidate } = require("./validate");
 
 module.exports = {
     upload,
     validate,
+    fileValidate,
 };

@@ -23,7 +23,7 @@ function xlsxController(req, res, _) {
 
     const InvoicingMonth = DateConverter(dateRow);
     if (InvoicingMonth !== inputMonth) {
-        return res.status(400).send("Invoicing month incorrect!");
+        throw HttpError(400, "Invoicing month incorrect!");
     }
     const currencyRates = {
         USD: parseFloat(currencyRow1),
