@@ -1,5 +1,5 @@
 const DateConverter = (date) => {
-    const parts = date.split(" ");
+    const parts = date?.split(" ");
     const month = parts[0];
     const year = parts[1];
     const monthsMap = {
