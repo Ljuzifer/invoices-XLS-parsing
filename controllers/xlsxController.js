@@ -31,7 +31,7 @@ function xlsxController(req, res, _) {
         GBP: parseFloat(currencyRow3),
     };
 
-    const invoicesData = InvoiceCreator(jsonData);
+    const invoicesData = InvoiceCreator(jsonData, currencyRates);
 
     const response = {
         InvoicingMonth,
