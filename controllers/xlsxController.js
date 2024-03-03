@@ -1,14 +1,15 @@
 const xlsx = require("xlsx");
-const { HttpError, DateConverter, ControllerWrapper, InvoiceCreator } = require("../helpers");
+const { HttpError, DateConverter, ControllerWrapper, InvoiceCreator, validateFileStructure } = require("../helpers");
 
 function xlsxController(req, res, _) {
     if (!req.file) {
         throw HttpError(400, "No file uploaded");
     }
 
-    if (!req.body.invoicingMonth) {
-        throw HttpError(400, "No month parameter provided");
+    if (!req.body?.invoicingMonth) {
+        throw HttpError(400, "No month parameter provided or incorrect parameter`s name.");
     }
+
     const inputMonth = req.body.invoicingMonth;
 
     const workbook = xlsx.readFile(req.file.path);
@@ -16,20 +17,12 @@ function xlsxController(req, res, _) {
     const worksheet = workbook.Sheets[sheetName];
     const jsonData = xlsx.utils.sheet_to_json(worksheet, { header: 1 });
 
-    const dateRow = jsonData[0][0];
-    const currencyRow1 = jsonData[1][1];
-    const currencyRow2 = jsonData[2][1];
-    const currencyRow3 = jsonData[3][1];
+    const { rowDate, currencyRates } = validateFileStructure(jsonData);
 
-    const InvoicingMonth = DateConverter(dateRow);
+    const InvoicingMonth = DateConverter(rowDate);
     if (InvoicingMonth !== inputMonth) {
         throw HttpError(400, "Invoicing month incorrect!");
     }
-    const currencyRates = {
-        USD: parseFloat(currencyRow1),
-        EUR: parseFloat(currencyRow2),
-        GBP: parseFloat(currencyRow3),
-    };
 
     const invoicesData = InvoiceCreator(jsonData, currencyRates);
 

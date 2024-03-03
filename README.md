@@ -26,7 +26,8 @@ Backend route with NodeJS/Express which process the XLS file, it have a single e
 </div>
 ---
 <div align="center">
-<h3>BASE URL: <a href="http://localhost:3000/upload" target="_blank" rel="noreferrer noopener">http://localhost:3000/upload</a></h3>
+<h3>BASE URL: <a href="http://localhost:3000/upload" target="_blank" rel="noreferrer noopener">http://localhost:3000</a></h3>
+<p color="yellow" style="color: yellow">Enter this URL + route (/upload) in Postman with "POST" request, add the file and the required parameter of month</p>
 </div>
 ---
 
@@ -60,8 +61,8 @@ To get started with the project, follow these steps:
 
 ### form-data:
 
--   file: "invoicingFile"
--   text: "invoicingMonth": YYYY-MM (date in correct format)
+-   `file`: "invoicingFile"
+-   `text`: "invoicingMonth": YYYY-MM (date in correct format)
 
 ### with response in format like:
 

@@ -14,14 +14,15 @@ app.use(express.static("uploads"));
 
 app.post("/upload", validate(monthSchema), upload.single("invoicingFile"), fileValidate, xlsxController);
 
-app.use((req, res) => {
+app.use((_, res) => {
     res.status(404).json({ message: "Not found" });
 });
 
 app.use((err, req, res, next) => {
     if (err instanceof multer.MulterError) {
-        if (err.message === "Unexpected field" || err.field !== "invoicingMonth") {
-            next(HttpError(400, "Field must be named -> invoicingMonth"));
+        if (err.message === "Unexpected field" || err.field !== "invoicingFile") {
+            err.message = "File field must be named -> invoicingFile";
+            next();
         }
     }
     res.status(err.status || 500).json({ message: err.message });
