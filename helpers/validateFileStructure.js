@@ -35,7 +35,7 @@ const validateFileStructure = (jsonData) => {
 
     const headers = jsonData[headerRowIndex];
 
-    for (let i = headerRowIndex + 1; i < jsonData.length; i++) {
+    for (let i = headerRowIndex + 1; i < jsonData.length; i += 1) {
         const row = jsonData[i];
         const itemCurrency = row[headers.indexOf("Item Price Currency")];
         const customer = row[headers.indexOf("Customer")];
