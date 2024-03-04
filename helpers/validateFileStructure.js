@@ -34,6 +34,23 @@ const validateFileStructure = (jsonData) => {
     }
 
     const headers = jsonData[headerRowIndex];
+
+    for (let i = headerRowIndex + 1; i < jsonData.length; i++) {
+        const row = jsonData[i];
+        const itemCurrency = row[headers.indexOf("Item Price Currency")];
+        const customer = row[headers.indexOf("Customer")];
+        const status = row[headers.indexOf("Status")];
+        const invoiceNumber = row[headers.indexOf("Invoice #")];
+        if (
+            itemCurrency &&
+            itemCurrency !== "ILS" &&
+            !Object.keys(currencyRates).includes(itemCurrency) &&
+            (status || invoiceNumber || customer)
+        ) {
+            throw HttpError(400, `Oops...! ${itemCurrency} rate is not exist in currency rates...`);
+        }
+    }
+
     const stringHeaders = headers.map((header) => String(header));
 
     if (!requiredHeaders.every((header) => stringHeaders.includes(header))) {

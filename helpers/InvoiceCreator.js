@@ -1,8 +1,9 @@
 const requiredHeaders = require("../public/requiredHeaders");
+const HttpError = require("./HttpError");
 const validateFileStructure = require("./validateFileStructure");
 
-const InvoiceCreator = (jsonData, currencyRates) => {
-    const { headerRowIndex } = validateFileStructure(jsonData);
+const InvoiceCreator = (jsonData) => {
+    const { currencyRates, headerRowIndex } = validateFileStructure(jsonData);
     const headersRow = jsonData[headerRowIndex];
 
     const createdData = [];
@@ -42,8 +43,10 @@ const InvoiceCreator = (jsonData, currencyRates) => {
 
             let totalPriceInInvoiceCurrency = totalPrice;
 
-            if (invoiceCurrency === "ILS") {
+            if (invoiceCurrency === "ILS" && itemPriceCurrency !== "ILS") {
                 totalPriceInInvoiceCurrency = totalPrice * itemPriceCurrencyRate;
+            } else if (invoiceCurrency === "ILS" && itemPriceCurrency === "ILS") {
+                totalPriceInInvoiceCurrency = totalPrice;
             } else if (itemPriceCurrency !== invoiceCurrency && invoiceCurrency !== "ILS") {
                 const invoiceCurrencyRate = currencyRates[invoiceCurrency];
                 totalPriceInInvoiceCurrency = (itemPriceCurrencyRate / invoiceCurrencyRate) * totalPrice;

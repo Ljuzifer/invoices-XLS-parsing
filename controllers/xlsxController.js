@@ -24,7 +24,7 @@ function xlsxController(req, res, _) {
         throw HttpError(400, "Invoicing month incorrect!");
     }
 
-    const invoicesData = InvoiceCreator(jsonData, currencyRates);
+    const invoicesData = InvoiceCreator(jsonData);
 
     const response = {
         InvoicingMonth,
