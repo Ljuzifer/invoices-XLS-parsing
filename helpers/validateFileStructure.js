@@ -43,7 +43,7 @@ const validateFileStructure = (jsonData) => {
         const invoiceNumber = row[headers.indexOf("Invoice #")];
         if (
             itemCurrency &&
-            itemCurrency.length <= 3 &&
+            itemCurrency.length === 3 &&
             itemCurrency !== "ILS" &&
             !Object.keys(currencyRates).includes(itemCurrency) &&
             (status || invoiceNumber || customer)
